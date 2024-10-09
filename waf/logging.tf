@@ -1,5 +1,4 @@
 data "aws_region" "current" {}
-
 data "aws_caller_identity" "current" {}
 
 resource "aws_kms_key" "this" {
@@ -19,7 +18,7 @@ resource "aws_kms_key_policy" "this" {
         "Sid" : "Enable IAM User Permissions",
         "Effect" : "Allow",
         "Principal" : {
-          "AWS" : "arn:aws:iam::938862131513:root"
+          "AWS" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
         },
         "Action" : "kms:*",
         "Resource" : "*"
