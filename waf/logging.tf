@@ -15,21 +15,21 @@ resource "aws_kms_key_policy" "this" {
     Id      = "key-default-1"
     Statement = [
       {
-        "Sid" : "Enable IAM User Permissions",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-        },
-        "Action" : "kms:*",
-        "Resource" : "*"
+        Sid    = "Enable IAM User Permissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
       },
       {
-        "Sid" : "Allow administration of the key",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : "${var.kms_admin_iam_arn}"
-        },
-        "Action" : [
+        Sid    = "Allow administration of the key"
+        Effect = "Allow"
+        Principal = {
+          AWS = "${var.kms_admin_iam_arn}"
+        }
+        Action = [
           "kms:ReplicateKey",
           "kms:Create*",
           "kms:Describe*",
@@ -43,10 +43,9 @@ resource "aws_kms_key_policy" "this" {
           "kms:Delete*",
           "kms:ScheduleKeyDeletion",
           "kms:CancelKeyDeletion"
-        ],
-        "Resource" : "*"
+        ]
+        Resource = "*"
       },
-
       {
         Sid    = "Allow CloudWatch Logs to use the key"
         Effect = "Allow"
