@@ -34,7 +34,7 @@ Modules:
 - [ ] AWS CloudTrail module
 - [ ] AWS S3 module
 - [ ] AWS CloudWatch module
-- [ ] AWS
+- [ ] ... to be continue
 
 General:
 - [ ] CI/CD pipeline for static code scanning in the repository
