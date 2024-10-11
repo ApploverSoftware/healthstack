@@ -27,8 +27,8 @@ This modular solution allows you to deploy HIPAA compliant infrastructure on AWS
 
 Modules:
 - [x] AWS WAF module
+- [x] AWS HealthLake module
 - [ ] AWS CloudTrail module
-- [ ] AWS HealthLake module
 - [ ] AWS S3 module
 
 General:
