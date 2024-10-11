@@ -4,9 +4,18 @@ AWS HealthLake is a service that allows healthcare organizations to store, trans
 
 Using this module you can boostrap FHIR repository to exchange data for introducing health data exchange with associates.
 
+HealthLake supported regions:
+
+- Asia Pacific (Mumbai)
+- Europe (London)
+- Asia Pacific (Sydney)
+- US East (N. Virginia)
+- US East (Ohio)
+- US West (Oregon)
+
 ## Example usage
 
-You can initialize FHIR repository with Synthea preloaded data
+You can initialize FHIR repository with Synthea preloaded data:
 
 ```tf
 module "healthlake" {
@@ -20,6 +29,9 @@ module "healthlake" {
   logs_bucket_name  = "fhir-logs-bucket"
 }
 ```
+
+
+> 🔴 Note that the `awscc_healthlake_fhir_datastore` resource takes about 20-30 minutes to be created and 15-20 minutes to be destroyed. 🔴
 
 
 <!-- BEGIN_TF_DOCS -->
