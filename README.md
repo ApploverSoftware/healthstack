@@ -70,9 +70,9 @@ We are open to, and grateful for, any contributions made by the community.
 A huge thank you to all the contributors who have dedicated their time and skills to making HealthStack a reality.
 
 
- <a href = "https://github.com/ApploverSoftware/healthstack/graphs/contributors">
-   <img src = "https://contrib.rocks/image?repo=https://contrib.rocks/image?repo=ApploverSoftware/healthstack"/>
- </a>
+<a href="https://github.com/ApploverSoftware/healthstack/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ApploverSoftware/healthstack" />
+</a>
 
 ## License
 
