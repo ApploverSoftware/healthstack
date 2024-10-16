@@ -33,6 +33,109 @@ module "healthlake" {
 
 > 🔴 Note that the `awscc_healthlake_fhir_datastore` resource takes about 20-30 minutes to be created and 15-20 minutes to be destroyed. 🔴
 
+## Useful information
+
+To interact with the FHIR API, you need to have the following IAM permissions attached to the relevant IAM role or user.
+
+Permission to access KMS key that encrypts data in HealthLake datastore
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "kms:Decrypt",
+                "kms:GenerateDataKey",
+                "kms:DescribeKey",
+                "kms:CreateGrant"
+            ],
+            "Resource": "${aws_kms_key.datastore.arn}"
+        }
+    ]
+}
+```
+
+HealthLake permissions (can be adjusted for read-only access, for example):
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "healthlake:*",
+                "s3:ListAllMyBuckets",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+                "iam:ListRoles"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:PassRole",
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:PassedToService": "healthlake.amazonaws.com"
+                }
+            }
+        }
+    ]
+}
+```
+
+## Example client
+
+The AWS SDK provides administrative capabilities for HealthLake, but to interact with the FHIR REST API, you need to create an HTTP request and sign it in a specific way to ensure authorization.
+
+In the following example, a GET request is made to the FHIR REST API:
+
+```rb
+datastore_id = "123456"
+url = "https://healthlake.us-east-1.amazonaws.com/datastore/#{datastore_id}/r4/Patient"
+
+signer = Aws::Sigv4::Signer.new(
+  service:           "healthlake",
+  region:            "us-east-1",
+  access_key_id:     ENV.fetch("AWS_ACCESS_KEY_ID", nil),
+  secret_access_key: ENV.fetch("AWS_SECRET_ACCESS_KEY", nil)
+)
+
+signature = signer.sign_request(
+  http_method: "GET",
+  url: url,
+)
+
+conn = Faraday.new(
+  url: url,
+  headers: signature.headers
+)
+
+conn.get
+```
+
+### Common problems
+
+You may encounter the following issue with signing:
+
+```
+The request signature we calculated does not match the signature you provided. Check your AWS Secret Access Key and signing method. Consult the service documentation for details.
+```
+
+This error usually occurs because you signed the wrong request. For example:
+
+```
+# You signed this:
+https://healthlake.us-east-1.amazonaws.com/datastore/#{datastore_id}/r4/
+
+# But made this request:
+https://healthlake.us-east-1.amazonaws.com/datastore/#{datastore_id}/r4/Patient
+```
+
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
